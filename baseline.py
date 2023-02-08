@@ -1,3 +1,4 @@
+import copy
 import numpy as np
 import os
 import torch
@@ -14,9 +15,6 @@ cudnn.benchmark = False
 from models import *
 
 from ptbxl_dataset import PTBXLWrapper
-
-import copy
-
 
 import argparse
 
@@ -229,8 +227,6 @@ def train(train_dl, val_dl, test_dl, warp_aug=None):
             'test_ld' : test_ld,
         }
     torch.save(tosave, os.path.join(get_save_path(), 'eval_logs.ckpt'))
-    
-    
 
         
 print("Checking if run complete")
@@ -243,8 +239,3 @@ if os.path.exists(savepath):
         sys.exit(0)
 
 res = train(train_dataloader, val_dataloader, test_dataloader)
-
-
-
-
-
