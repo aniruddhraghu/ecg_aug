@@ -1,5 +1,6 @@
 #### Hyperoptimization code adapted from https://github.com/googleinterns/commentaries ####
 
+import copy
 import numpy as np
 import os
 import torch
@@ -10,13 +11,10 @@ import pickle
 from torch.utils.data import Dataset, DataLoader, Subset
 from torch.autograd import grad
 
+# For determinism
 from torch.backends import cudnn
 cudnn.deterministic = True
 cudnn.benchmark = False
-
-
-import copy
-
 
 from models import *
 
@@ -257,9 +255,6 @@ def do_aug(xecg, y, aug):
     xret = aug(xecg,y)
     return xret
 
-
-import copy
-
 def train(train_dl, val_dl, test_dl):
     loss_meter = AverageMeter()
     if args.aug == 'learnmag':
@@ -299,7 +294,6 @@ def train(train_dl, val_dl, test_dl):
     train_ld = {'loss' : []}
     val_ld = {'loss' : []}
     test_ld = {}
-    
     
     best_val_loss = np.inf
     best_model = copy.deepcopy(enc.state_dict())
@@ -365,8 +359,7 @@ def train(train_dl, val_dl, test_dl):
         }
     torch.save(tosave, os.path.join(get_save_path(), 'eval_logs.ckpt'))
 
-            
-            
+
 print("Checking if run complete")
 savepath = os.path.join(get_save_path(), 'eval_logs.ckpt')
 if os.path.exists(savepath):
@@ -377,11 +370,3 @@ if os.path.exists(savepath):
         sys.exit(0)
 
 res = train(train_dataloader, val_dataloader, test_dataloader)
-
-
-
-
-
-
-
-
